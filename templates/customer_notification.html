@@ -1,0 +1,43 @@
+<!-- 
+Any text surrounded by a pair of braces (e.g., {{ person_name }}) is a variable. This means “insert the value of the variable with the given name.” (How do we specify the values of the variables? We’ll get to that in a moment.)
+
+Any text that’s surrounded by curly braces and percent signs (e.g., {% if ordered_warranty %}) is a template tag. The definition of a tag is quite broad: a tag just tells the template system to “do something.
+This example template contains a for tag ({% for item in item_list %}) and an if tag ({% if ordered_warranty %}).
+
+The second paragraph of this template contains an example of a filter, which is the most convenient way to alter the formatting of a variable. In this example, {{ ship_date|date:"F j, Y" }}, we’re passing the ship_date variable to the date filter, giving the date filter the argument "F j, Y". The date filter formats dates in a given format, as specified by that argument. Filters are attached using a pipe character (|), as a reference to Unix pipes.
+-->
+
+
+
+<html>
+	<head>
+		<title>Ordering notice
+		</title>
+	</head>
+	<body>
+		<h1>Ordering notice</h1>
+
+		<p>Dear {{ person_name }},</p>
+
+		<p>Thanks for placing an order from {{ company }}. It's scheduled to
+		ship on {{ ship_date|date:"F j, Y" }}.</p>
+
+		<p>Here are the items you've ordered:</p>
+
+		<ul>
+		{% for item in item_list %}
+		    <li>{{ item }}</li>
+		{% endfor %}
+		</ul>
+
+		{% if ordered_warranty %}
+		    <p>Your warranty information will be included in the packaging.</p>
+		{% else %}
+		    <p>You didn't order a warranty, so you're on your own when
+		    the products inevitably stop working.</p>
+		{% endif %}
+
+		<p>Sincerely,<br />{{ company }}</p>
+
+	</body>
+</html>
