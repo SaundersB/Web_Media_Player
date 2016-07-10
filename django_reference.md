@@ -1,7 +1,5 @@
 # Django Reference Guide
 
-
-
 ## Dot Operator and Access
 * Dictionary lookup (e.g., foo["bar"])
 * Attribute lookup (e.g., foo.bar)
@@ -29,9 +27,39 @@
 
 ### Filter
 ####Template filters are simple ways of altering the value of variables before they’re displayed
-
     {{ my_list|first|upper }}
 
 
+### Rendering Templates
+#### Template HTML 
+    <html>
+    	<body>
+    		The time now is {{ current_date }}.
+    	</body>
+    </html>
+
+#### Views.py
+    from django.template.loader import get_template
+    from django.template import Context
+    from django.http import HttpResponse
+    import datetime
+    
+    def current_datetime(request):
+    	now = datetime.datetime.now()
+    	#html = "<html><body>The time now is %s.</body></html>" % now
+    	#return HttpResponse(html)
+    	t = get_template('current_datetime.html')
+    	html = t.render(Context({'current_date': now}))
+    	return HttpResponse(html)
+
+#### Settings.py
+    ...
+    TEMPLATES = [
+    ...
+            'OPTIONS': {
+            'context_processors': [
+                ...
+                'django.template.backends.django.DjangoTemplates',
+                'django.template.backends.jinja2.Jinja2',
 
 
