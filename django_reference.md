@@ -30,15 +30,17 @@
     {{ my_list|first|upper }}
 
 
-### Rendering Templates
-#### Template HTML 
+
+### Templates
+#### Rendering Templates
+##### Template HTML 
     <html>
     	<body>
     		The time now is {{ current_date }}.
     	</body>
     </html>
 
-#### Views.py
+##### Views.py
     from django.template.loader import get_template
     from django.template import Context
     from django.http import HttpResponse
@@ -52,7 +54,7 @@
     	html = t.render(Context({'current_date': now}))
     	return HttpResponse(html)
 
-#### Settings.py
+##### Settings.py
     ...
     TEMPLATES = [
     ...
@@ -61,5 +63,12 @@
                 ...
                 'django.template.backends.django.DjangoTemplates',
                 'django.template.backends.jinja2.Jinja2',
+
+
+#### Inluding Templates Into Other Templates
+##### This tag allows you to include the contents of another template
+    {% include "nav.html" %}
+
+
 
 
