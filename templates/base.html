@@ -4,8 +4,21 @@
 <head>
     <title>{% block title %}{% endblock %}</title>
 	<link rel="stylesheet" type="text/css" href="{% static '/static/video_style.css' %}" />
+	<link rel="stylesheet" type="text/css" href="{% static '/static/header.css' %}" />
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 </head>
 <body>
+	
+	<div id="fixedheader">
+		<ul>
+			<li>Home</li>
+			<li>Login</li>
+			<li>Videos</li>
+			<li>Music</li>
+		</ul>
+	</div>
+
+	
     <h1>Speakly Media Player</h1>
     {% block content %}{% endblock %}
     {% block footer %}
@@ -13,5 +26,8 @@
     <p>Enjoy yourself.</p>
     {% endblock %}
 </body>
+
+	<div id="fixedfooter">
+	</div>
 </html>
 

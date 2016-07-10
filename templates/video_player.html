@@ -1,20 +1,26 @@
-{% extends 'base.html' %}
 {% load staticfiles %}
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html lang="en">
+	<head>
+	    <title>{% block title %}{% endblock %}</title>
+		<link rel="stylesheet" type="text/css" href="{% static '/static/video_style.css' %}" />
+		<link rel="stylesheet" type="text/css" href="{% static '/static/header.css' %}" />
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+	</head>
+	<body>
+		<video controls autoplay loop muted>
+			<source src="http://www.quirksmode.org/html5/videos/big_buck_bunny.mp4" type="video/mp4">
+			Your browser does not support MP4 HTML5 video.
+		</video>
+		<video controls autoplay loop muted>
+			<source src="http://www.quirksmode.org/html5/videos/big_buck_bunny.webm" type="video/ogg">
+			Your browser does not support WebM HTML5 video.
+		</video>
+		<video controls autoplay loop muted>
+			<source src="http://www.quirksmode.org/html5/videos/big_buck_bunny.ogv" type="video/ogg">
+			Your browser does not support OGG HTML5 video.
+		</video>
+	</body>
+</html>
 
-{% block title %}Video Player{% endblock %}
-
-{% block content %}
-	<video controls autoplay loop muted>
-		<source src="http://www.quirksmode.org/html5/videos/big_buck_bunny.mp4" type="video/mp4">
-		Your browser does not support MP4 HTML5 video.
-	</video>
-	<video controls autoplay loop muted>
-		<source src="http://www.quirksmode.org/html5/videos/big_buck_bunny.webm" type="video/ogg">
-		Your browser does not support WebM HTML5 video.
-	</video>
-	<video controls autoplay loop muted>
-		<source src="http://www.quirksmode.org/html5/videos/big_buck_bunny.ogv" type="video/ogg">
-		Your browser does not support OGG HTML5 video.
-	</video>
-{% endblock %}
 
