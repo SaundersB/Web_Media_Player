@@ -28,6 +28,7 @@ Django is a high-level Python Web framework that encourages rapid development an
 
 ### Filter
 Template filters are simple ways of altering the value of variables before theyâ€™re displayed
+
     {{ my_list|first|upper }}
 
 
@@ -68,6 +69,7 @@ Template filters are simple ways of altering the value of variables before theyâ
 
 #### Inluding Templates Into Other Templates
 This tag allows you to include the contents of another template
+    
     {% include "nav.html" %}
 
 
