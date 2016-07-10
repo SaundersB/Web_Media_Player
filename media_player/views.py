@@ -22,3 +22,8 @@ def video_player(request):
 	t = get_template('video_player.html')
 	html = t.render()
 	return HttpResponse(html)
+
+def media_browser(request):
+	t = get_template('media_browser.html')
+	html = t.render()
+	return HttpResponse(html)

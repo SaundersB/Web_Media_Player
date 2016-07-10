@@ -19,8 +19,16 @@ div#fixedfooter {
 	padding:8px;
 }
 
+.nav-pills a {
+    color: black
+}
 
-h1 {
-	position: center;
-	padding:50px;
+.nav-pills a:hover {
+    color: black;
+    border-radius: 0px;
+}
+
+.nav-pills .active a:hover {
+    color: black;
+    border-radius: 0px;
 }
