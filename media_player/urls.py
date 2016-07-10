@@ -15,11 +15,13 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
-from media_player.views import hello, homepage_view, current_datetime
+from media_player.views import hello, homepage_view, current_datetime, base
 
 urlpatterns = [
 	url(r'^$', current_datetime),
+	url(r'^$', base),
 	url(r'^$', homepage_view),
     url(r'^admin/', admin.site.urls),
     url(r'^hello/$', hello),
 ]
+ 

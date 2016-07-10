@@ -16,3 +16,7 @@ def current_datetime(request):
 	t = get_template('current_datetime.html')
 	html = t.render(Context({'current_date': now}))
 	return HttpResponse(html)
+
+
+def base(request):
+	return HttpResponse("base")
