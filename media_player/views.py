@@ -18,5 +18,7 @@ def current_datetime(request):
 	return HttpResponse(html)
 
 
-def base(request):
-	return HttpResponse("base")
+def video_player(request):
+	t = get_template('video_player.html')
+	html = t.render()
+	return HttpResponse(html)
