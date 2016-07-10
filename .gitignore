@@ -19,3 +19,9 @@ media
 *.webm
 *.jpg
 *.png
+
+
+
+
+### OS X ###
+*.DS_Store
