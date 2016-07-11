@@ -5,13 +5,37 @@
 
 {% block content %}
 
+<div class="panel panel-default">
+	<div class="panel-heading">Audio Tracks</div>
+	<table class="table">
+		<tr>
+			<th>Track Title</th>
+			<th>Artist</th> 
+			<th>Album</th>
+			<th>Track Number</th>
+			<th>Year</th>
+			<th>File Name</th>
+		</tr>
 
+		{% for file in loaded_files %}
+			<tr>
+				<td>{{ file.song_title }} 
+				</td>
+				<td>{{ file.artist }} 
+				</td>
+				<td>{{ file.album }} 
+				</td>
+				<td>{{ file.track }} 
+				</td>
+				<td>{{ file.year }} 
+				</td>
+				<td>{{ file.file_name }} 
+				</td>
+			</tr>
+		{% endfor %}
+	</table>
+</div>
 
-<ul>
-{% for filename in loaded_files %}
-	<li> {{ filename }} </li>
-{% endfor %}
-<ul>
 
 	
 {% endblock %}

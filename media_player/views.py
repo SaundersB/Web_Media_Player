@@ -32,8 +32,8 @@ def video_player(request):
 	html = t.render()
 	return HttpResponse(html)
 
-''' This function will render a media browser with all files in the media folder. '''
 def media_browser(request):
+	''' This function will render a media browser with all files in the media folder. '''
 	t = get_template('media_browser.html')
 
 	# Obtain a list of all media files in the media folder.
@@ -44,14 +44,17 @@ def media_browser(request):
 
  	# Obtain all the values from the database
 	audio_track_list = AudioTrack.objects.all()
+
 	print("LIST: " + str(audio_track_list))
 
 	# Swap out the files found to be substituted and rendered into the HTML.
-	html = t.render(Context({'loaded_files': loaded_files}))
+	html = t.render(Context({'loaded_files': audio_track_list}))
+
 	return HttpResponse(html)
 
 
 def obtain_all_media_filenames():
+	''' This function will obtain a list of all files in the media folder. '''
 	if(VERBOSE):
 		print("MEDIA DIRECTORY: " + MEDIA_ROOT)
 
@@ -72,6 +75,8 @@ def obtain_all_media_filenames():
 
 
 def obtain_ID3_tag_information(audio_track, audio_track_object):
+	''' This function will obtain individual ID3 tags from an MP3 file and save it to the AudioTrack
+	Django Model if the value is non-null. '''
 	# Initialize all fields to an empty string.
 	album = ""
 	performer = ""
@@ -89,13 +94,13 @@ def obtain_ID3_tag_information(audio_track, audio_track_object):
 
 	if (VERBOSE):
 		print("-----Starting ID3 Process-------")
-		print(id3r.getValue('album'))
-		print(id3r.getValue('performer'))
-		print(id3r.getValue('title'))
+		print("album: " + id3r.getValue('album'))
+		print("performer: " + id3r.getValue('performer'))
+		print("title: " + id3r.getValue('title'))
+		print("track: " + id3r.getValue('track'))
+		print("year: " + id3r.getValue('year'))
+		print("genre: " + id3r.getValue('genre'))
 		print(id3r.getValue('track'))
-		print(id3r.getValue('year'))
-		print(id3r.getValue('genre'))
-		print(id3r.getValue('track number'))
 		print(id3r.getValue('artist'))
 		print(id3r.getValue('comment'))
 		print(id3r.getValue('copyright'))
@@ -105,9 +110,9 @@ def obtain_ID3_tag_information(audio_track, audio_track_object):
 	if(id3r.getValue('album') != None):
 		audio_track_object.album = id3r.getValue('album')
 	if(id3r.getValue('performer') != None):
-		audio_track_object.performer = id3r.getValue('performer')
+		audio_track_object.artist = id3r.getValue('performer')
 	if(id3r.getValue('title') != None):
-		audio_track_object.title = id3r.getValue('title')
+		audio_track_object.song_title = id3r.getValue('title')
 	if(id3r.getValue('track') != None):
 		audio_track_object.track = id3r.getValue('track')
 	if(id3r.getValue('year') != None):
@@ -128,9 +133,13 @@ def obtain_ID3_tag_information(audio_track, audio_track_object):
 
 
 def update_media_library(filelist):
+	''' This function will initialize and save all database entries via the AudioTrack Django 
+	database entry. '''
 	for audio_track in filelist:
 		# Initialize an audio track database entry with only the file name.
-		track = AudioTrack(song_title = audio_track)
+		track = AudioTrack(file_name = str(audio_track))
+
+		print("Audio Track: " + audio_track)
 
 		# Set the remaining ID3 tag values into the database row entry.
 		obtain_ID3_tag_information(audio_track, track)
