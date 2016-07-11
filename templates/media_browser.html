@@ -1,8 +1,17 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 
-{% block title %}Video Player{% endblock %}
+{% block title %}Media Browser{% endblock %}
 
 {% block content %}
+
+
+
+<ul>
+{% for filename in loaded_files %}
+	<li> {{ filename }} </li>
+{% endfor %}
+<ul>
+
 	
 {% endblock %}

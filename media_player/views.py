@@ -34,7 +34,25 @@ def video_player(request):
 ''' This function will render a media browser with all files in the media folder. '''
 def media_browser(request):
 	t = get_template('media_browser.html')
-	
 
-	html = t.render()
+	BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+	MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+
+	print(MEDIA_ROOT)
+
+	loaded_files = []
+	num_of_files = 0
+
+	for filename in os.listdir(os.getcwd() + "/media/"):
+		num_of_files+=1
+		loaded_files.append(filename)
+		print(filename)
+
+	print("Total: " + str(loaded_files) + " " + str(num_of_files))
+
+
+	html = t.render(Context({'loaded_files': loaded_files}))
 	return HttpResponse(html)
+
+
+
