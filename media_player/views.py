@@ -23,12 +23,9 @@ def homepage_view(request):
 
 def current_datetime(request):
 	now = datetime.datetime.now()
-	#html = "<html><body>The time now is %s.</body></html>" % now
-	#return HttpResponse(html)
 	t = get_template('current_datetime.html')
 	html = t.render(Context({'current_date': now}))
 	return HttpResponse(html)
-
 
 def video_player(request):
 	t = get_template('video_player.html')
@@ -49,31 +46,33 @@ def media_browser(request):
 	audio_track_list = AudioTrack.objects.all()
 	print("LIST: " + str(audio_track_list))
 
-	#print("Audio Tracks: " + str(audio_track_list))
-
+	# Swap out the files found to be substituted and rendered into the HTML.
 	html = t.render(Context({'loaded_files': loaded_files}))
 	return HttpResponse(html)
-
-
 
 
 def obtain_all_media_filenames():
 	if(VERBOSE):
 		print("MEDIA DIRECTORY: " + MEDIA_ROOT)
+
 	loaded_files = []
 	num_of_files = 0
 
+	# Iterate over all files found in the media directory. Count the total number of files.
 	for filename in os.listdir(os.getcwd() + "/media/"):
 		if(VERBOSE):
 			print(filename)
 		num_of_files+=1
 		loaded_files.append(filename)
 
-	print("Total: " + str(loaded_files) + " " + str(num_of_files))
+	if(VERBOSE):
+		print("Total: " + str(loaded_files) + " " + str(num_of_files))
 
 	return loaded_files
 
+
 def obtain_ID3_tag_information(audio_track, audio_track_object):
+	# Initialize all fields to an empty string.
 	album = ""
 	performer = ""
 	title = ""
@@ -85,6 +84,7 @@ def obtain_ID3_tag_information(audio_track, audio_track_object):
 	comment = ""
 	copyright = ""
 
+	# Obtain the media diretory with the current media file in order to read the ID3 tags.
 	id3r = id3reader.Reader(MEDIA_ROOT + audio_track)
 
 	if (VERBOSE):
@@ -101,6 +101,7 @@ def obtain_ID3_tag_information(audio_track, audio_track_object):
 		print(id3r.getValue('copyright'))
 		print("-----------Ending---------------")
 
+	# If each ID3 tag is not null, write it to the database row entry.
 	if(id3r.getValue('album') != None):
 		audio_track_object.album = id3r.getValue('album')
 	if(id3r.getValue('performer') != None):
@@ -122,19 +123,17 @@ def obtain_ID3_tag_information(audio_track, audio_track_object):
 	if(id3r.getValue('copyright') != None):
 		audio_track_object.copyright = id3r.getValue('copyright')
 
+	# Save all fields for this database row entry.
 	audio_track_object.save()
-
 
 
 def update_media_library(filelist):
 	for audio_track in filelist:
-
+		# Initialize an audio track database entry with only the file name.
 		track = AudioTrack(song_title = audio_track)
 
+		# Set the remaining ID3 tag values into the database row entry.
 		obtain_ID3_tag_information(audio_track, track)
 
 
-		#print("Audio Track Title: " + str(track))
-
-		#track.save()
 
