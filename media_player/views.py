@@ -8,9 +8,12 @@ from media_browser.models import AudioTrack
 
 import datetime
 import os
-import pyglet
+import id3reader
 
+VERBOSE = True
 
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
 def hello(request):
 	return HttpResponse("Hello World")
@@ -44,9 +47,9 @@ def media_browser(request):
 
  	# Obtain all the values from the database
 	audio_track_list = AudioTrack.objects.all()
+	print("LIST: " + str(audio_track_list))
 
-
-	print("Audio Tracks: " + str(audio_track_list))
+	#print("Audio Tracks: " + str(audio_track_list))
 
 	html = t.render(Context({'loaded_files': loaded_files}))
 	return HttpResponse(html)
@@ -55,26 +58,83 @@ def media_browser(request):
 
 
 def obtain_all_media_filenames():
-	BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-	MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
-
-	print(MEDIA_ROOT)
-
+	if(VERBOSE):
+		print("MEDIA DIRECTORY: " + MEDIA_ROOT)
 	loaded_files = []
 	num_of_files = 0
 
 	for filename in os.listdir(os.getcwd() + "/media/"):
+		if(VERBOSE):
+			print(filename)
 		num_of_files+=1
 		loaded_files.append(filename)
-		print(filename)
 
 	print("Total: " + str(loaded_files) + " " + str(num_of_files))
 
 	return loaded_files
 
+def obtain_ID3_tag_information(audio_track, audio_track_object):
+	album = ""
+	performer = ""
+	title = ""
+	track = ""
+	year = ""
+	genre = ""
+	track_number = ""
+	artist = ""
+	comment = ""
+	copyright = ""
+
+	id3r = id3reader.Reader(MEDIA_ROOT + audio_track)
+
+	if (VERBOSE):
+		print("-----Starting ID3 Process-------")
+		print(id3r.getValue('album'))
+		print(id3r.getValue('performer'))
+		print(id3r.getValue('title'))
+		print(id3r.getValue('track'))
+		print(id3r.getValue('year'))
+		print(id3r.getValue('genre'))
+		print(id3r.getValue('track number'))
+		print(id3r.getValue('artist'))
+		print(id3r.getValue('comment'))
+		print(id3r.getValue('copyright'))
+		print("-----------Ending---------------")
+
+	if(id3r.getValue('album') != None):
+		audio_track_object.album = id3r.getValue('album')
+	if(id3r.getValue('performer') != None):
+		audio_track_object.performer = id3r.getValue('performer')
+	if(id3r.getValue('title') != None):
+		audio_track_object.title = id3r.getValue('title')
+	if(id3r.getValue('track') != None):
+		audio_track_object.track = id3r.getValue('track')
+	if(id3r.getValue('year') != None):
+		audio_track_object.year = id3r.getValue('year')
+	if(id3r.getValue('genre') != None):
+		audio_track_object.genre = id3r.getValue('genre')
+	if(id3r.getValue('track number') != None):
+		audio_track_object.track_number = id3r.getValue('track number')
+	if(id3r.getValue('artist') != None):
+		audio_track_object.artist = id3r.getValue('artist')
+	if(id3r.getValue('comment') != None):
+		audio_track_object.comment = id3r.getValue('comment')
+	if(id3r.getValue('copyright') != None):
+		audio_track_object.copyright = id3r.getValue('copyright')
+
+	audio_track_object.save()
+
+
 
 def update_media_library(filelist):
 	for audio_track in filelist:
+
 		track = AudioTrack(song_title = audio_track)
-		print("Audio Track Title: " + str(track))
+
+		obtain_ID3_tag_information(audio_track, track)
+
+
+		#print("Audio Track Title: " + str(track))
+
+		#track.save()
 
