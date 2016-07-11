@@ -1,7 +1,15 @@
 from django.template.loader import get_template
 from django.template import Context
 from django.http import HttpResponse
+from django.core.files import File
+from django.core.files.storage import FileSystemStorage
+from django.db import models
+
 import datetime
+import os
+
+
+
 
 def hello(request):
 	return HttpResponse("Hello World")
@@ -23,7 +31,10 @@ def video_player(request):
 	html = t.render()
 	return HttpResponse(html)
 
+''' This function will render a media browser with all files in the media folder. '''
 def media_browser(request):
 	t = get_template('media_browser.html')
+	
+
 	html = t.render()
 	return HttpResponse(html)
