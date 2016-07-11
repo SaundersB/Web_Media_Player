@@ -15,3 +15,6 @@ class AudioTrack(models.Model):
 	track_number = models.IntegerField()
 	file_size = models.DecimalField(max_digits=20, decimal_places=5)
 
+	def __str__(self):
+		return u'%s %s %s %s %s %s %s %s %s %s' % (self.song_title, self.artist, self.album, self.date_added, self.genre, self.play_count, self.rating, self.year, self.track_number, self.file_size)
+
