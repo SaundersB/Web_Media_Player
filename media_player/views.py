@@ -118,6 +118,7 @@ def write_ID3_tag_information_to_database(current_audio_track):
 	genre = ""
 	track_number = ""
 	performer = ""
+	song_title = ""
 
 	# Obtain the media diretory with the current media file in order to read the ID3 tags.
 	id3r = id3reader.Reader(MEDIA_ROOT + current_audio_track)
@@ -145,7 +146,7 @@ def write_ID3_tag_information_to_database(current_audio_track):
 		year = str(id3r.getValue('year').encode("utf-8"))
 	if(id3r.getValue('genre') != None and id3r.getValue('genre') != ""):
 		genre = str(id3r.getValue('genre').encode("utf-8"))
-	if(id3r.getValue('track') != ""):
+	if(id3r.getValue('track') != "" and id3r.getValue('track') != None):
 		track_number = str(id3r.getValue('track').encode("utf-8"))
 
 
