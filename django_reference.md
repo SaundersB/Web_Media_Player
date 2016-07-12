@@ -73,5 +73,14 @@ This tag allows you to include the contents of another template
     {% include "nav.html" %}
 
 
+#### Delete Tables from Specified App
+    In django 1.9.5:
+    
+    Delete your migrations folder
+    In the database: DELETE FROM django_migrations WHERE app = 'app_name'.
+    
+    You could alternatively just truncate this table.
+    python manage.py makemigrations app_name
+    python manage.py migrate
 
 
