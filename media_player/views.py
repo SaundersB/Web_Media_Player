@@ -5,15 +5,17 @@ from django.core.files import File
 from django.core.files.storage import FileSystemStorage
 from django.db import models
 from media_browser.models import AudioTrack
+from django.shortcuts import get_object_or_404
 
 import datetime
 import os
 import id3reader
+import string
 
 VERBOSE = True
-
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+
 
 def hello(request):
 	return HttpResponse("Hello World")
@@ -36,16 +38,23 @@ def media_browser(request):
 	''' This function will render a media browser with all files in the media folder. '''
 	t = get_template('media_browser.html')
 
-	# Obtain a list of all media files in the media folder.
-	loaded_files = obtain_all_media_filenames()
+	# Provides a list of file_names.
+	found_files = obtain_all_media_filenames()
 
-	# Update the database with all the current media files found in the media folder.
- 	update_media_library(loaded_files)
+	# Checks the found files for 
+	new_files = scan_for_new_audio_files()
 
- 	# Obtain all the values from the database
+	if(len(new_files) > 0):
+		print("New files were found.")
+		# Update the database with all the current media files found in the media folder.
+ 		for new_file in new_files:
+ 			print("Adding " + new_file)
+ 			write_ID3_tag_information_to_database(new_file)
+
+	else:
+		print("No new files.")
+		
 	audio_track_list = AudioTrack.objects.all()
-
-	print("LIST: " + str(audio_track_list))
 
 	# Swap out the files found to be substituted and rendered into the HTML.
 	html = t.render(Context({'loaded_files': audio_track_list}))
@@ -53,10 +62,110 @@ def media_browser(request):
 	return HttpResponse(html)
 
 
+def scan_for_new_audio_files():
+	print("---------Scanning---for-----new------files----------------")
+	# Obtain a list of all media files in the media folder.
+	loaded_files, num_of_files = obtain_all_media_filenames()
+
+	# Obtain all objects from the database
+	audio_track_list = AudioTrack.objects.all()
+
+	# Output how many files are found in both the database and media folder.
+	if(VERBOSE):
+		print(str(num_of_files) + " :number of files in the media directory. \n")
+		print(str(audio_track_list) + " :number of files in database. \n")
+
+	# If we have the same count or more files in the database, don't load any more.
+	if (len(audio_track_list) >= len(loaded_files)):
+		return []
+
+	# If the database is empty, load all files in the media folder.
+	if (len(audio_track_list) == 0):
+		print("No audio tracks in the database")
+		return loaded_files
+
+	# Output all files in the media folder.
+	for audio_file in loaded_files:
+		print("Audio File")
+		print(audio_file)
+
+	# Output all files in the database.
+	for track in audio_track_list:
+		print("Audio Track")
+		print(track.file_name)
+
+	# Iterate through all audio files in the database, if the filename matches
+	# a filename matched in the media folder, remove it from the list of 
+	# tracks to be added.
+	for database_file in audio_track_list:
+		if(database_file in loaded_files):
+			loaded_files.remove(database_file)
+
+	return loaded_files
+
+	print("---------Done-------------------Scanning----------------")
+	return loaded_files
+
+
+def write_ID3_tag_information_to_database(current_audio_track):
+	''' This function will obtain individual ID3 tags from an MP3 file and save it to the AudioTrack
+	Django Model if the value is non-null. '''
+	# Initialize all fields to an empty string.
+	album = ""
+	performer = ""
+	title = ""
+	year = ""
+	genre = ""
+	track_number = ""
+	performer = ""
+
+	# Obtain the media diretory with the current media file in order to read the ID3 tags.
+	id3r = id3reader.Reader(MEDIA_ROOT + current_audio_track)
+
+	'''
+	if (VERBOSE):
+		print("-----Starting ID3 Process-------")
+		print("album: " + id3r.getValue('album'))
+		print("performer: " + id3r.getValue('performer'))
+		print("title: " + id3r.getValue('title'))
+		print("track: " + str(id3r.getValue('track')))
+		print("year: " + str(id3r.getValue('year')))
+		print("genre: " + str(id3r.getValue('genre')))
+		print("-----------Ending---------------")
+	'''
+
+	# If each ID3 tag is not null, write it to the database row entry.
+	if(id3r.getValue('album') != None):
+		album = str(id3r.getValue('album').encode("utf-8"))
+	if(id3r.getValue('performer') != None):
+		performer = str(id3r.getValue('performer'))
+	if(id3r.getValue('title') != None):
+		song_title = str(id3r.getValue('title').encode("utf-8"))
+	if(id3r.getValue('year') != "" and id3r.getValue('year') != None):
+		year = str(id3r.getValue('year').encode("utf-8"))
+	if(id3r.getValue('genre') != None and id3r.getValue('genre') != ""):
+		genre = str(id3r.getValue('genre').encode("utf-8"))
+	if(id3r.getValue('track') != ""):
+		track_number = str(id3r.getValue('track').encode("utf-8"))
+
+
+	audio_track_object = AudioTrack(file_name = str(current_audio_track), song_title=str(song_title), artist=str(performer), album=str(album), genre=genre, year=year, track_number=track_number)
+
+	#print("Audio Track: " + audio_track)
+
+	audio_track_object.save()
+
+	# Save all fields for this database row entry.
+	return audio_track_object
+
+
+
 def obtain_all_media_filenames():
 	''' This function will obtain a list of all files in the media folder. '''
+	print("----------------------------------------------------------------")
+	print("Obtaining all media file_names")
 	if(VERBOSE):
-		print("MEDIA DIRECTORY: " + MEDIA_ROOT)
+		print("\nMEDIA DIRECTORY: " + MEDIA_ROOT)
 
 	loaded_files = []
 	num_of_files = 0
@@ -68,81 +177,12 @@ def obtain_all_media_filenames():
 		num_of_files+=1
 		loaded_files.append(filename)
 
-	if(VERBOSE):
-		print("Total: " + str(loaded_files) + " " + str(num_of_files))
 
-	return loaded_files
+	return loaded_files, num_of_files
 
 
-def obtain_ID3_tag_information(audio_track, audio_track_object):
-	''' This function will obtain individual ID3 tags from an MP3 file and save it to the AudioTrack
-	Django Model if the value is non-null. '''
-	# Initialize all fields to an empty string.
-	album = ""
-	performer = ""
-	title = ""
-	track = ""
-	year = ""
-	genre = ""
-	track_number = ""
-	artist = ""
-	comment = ""
-	copyright = ""
 
-	# Obtain the media diretory with the current media file in order to read the ID3 tags.
-	id3r = id3reader.Reader(MEDIA_ROOT + audio_track)
-
-	if (VERBOSE):
-		print("-----Starting ID3 Process-------")
-		print("album: " + id3r.getValue('album'))
-		print("performer: " + id3r.getValue('performer'))
-		print("title: " + id3r.getValue('title'))
-		print("track: " + id3r.getValue('track'))
-		print("year: " + id3r.getValue('year'))
-		print("genre: " + id3r.getValue('genre'))
-		print(id3r.getValue('track'))
-		print(id3r.getValue('artist'))
-		print(id3r.getValue('comment'))
-		print(id3r.getValue('copyright'))
-		print("-----------Ending---------------")
-
-	# If each ID3 tag is not null, write it to the database row entry.
-	if(id3r.getValue('album') != None):
-		audio_track_object.album = id3r.getValue('album')
-	if(id3r.getValue('performer') != None):
-		audio_track_object.artist = id3r.getValue('performer')
-	if(id3r.getValue('title') != None):
-		audio_track_object.song_title = id3r.getValue('title')
-	if(id3r.getValue('track') != None):
-		audio_track_object.track = id3r.getValue('track')
-	if(id3r.getValue('year') != None):
-		audio_track_object.year = id3r.getValue('year')
-	if(id3r.getValue('genre') != None):
-		audio_track_object.genre = id3r.getValue('genre')
-	if(id3r.getValue('track number') != None):
-		audio_track_object.track_number = id3r.getValue('track number')
-	if(id3r.getValue('artist') != None):
-		audio_track_object.artist = id3r.getValue('artist')
-	if(id3r.getValue('comment') != None):
-		audio_track_object.comment = id3r.getValue('comment')
-	if(id3r.getValue('copyright') != None):
-		audio_track_object.copyright = id3r.getValue('copyright')
-
-	# Save all fields for this database row entry.
-	audio_track_object.save()
-
-
-def update_media_library(filelist):
-	''' This function will initialize and save all database entries via the AudioTrack Django 
-	database entry. '''
-	for audio_track in filelist:
-		# Initialize an audio track database entry with only the file name.
-		track = AudioTrack(file_name = str(audio_track))
-
-		print("Audio Track: " + audio_track)
-
-		# Set the remaining ID3 tag values into the database row entry.
-		obtain_ID3_tag_information(audio_track, track)
-
+def clean(instr):
+    return instr.translate(None, string.punctuation + '')
 
 
