@@ -1,7 +1,7 @@
 
 function animateByIdFadeIn(currentDiv, nextDiv) {
 	console.log("animateByIdFadeIn");
-	TweenMax.fromTo(document.getElementById(currentDiv), 1, {opacity: 1}, {opacity: 0, onComplete: completeHandler, onCompleteParams: [currentDiv, nextDiv]});
+	TweenMax.fromTo(document.getElementById(currentDiv), 1, {opacity: 1}, {opacity: 0});
 }
 
 function completeHandler() {
@@ -11,13 +11,13 @@ function completeHandler() {
 
 function scroll_text_right(text){
 	console.log("scrolling_text");
-	TweenMax.to(text, 50, {x:2000, yoyo:false, repeat:-1 });
+	TweenMax.to(text, 50, {x:2000, yoyo:true, repeat:-1 });
 	//TweenMax.to(text, 10, {scrollX:100, repeat:5, ease:Linear.easeNone});
 }
 
 function scroll_text_left(text){
 	console.log("scrolling_text");
-	TweenMax.to(text, 50, {x:-2000, yoyo:false, repeat:-1 });
+	TweenMax.to(text, 50, {x:-2000, yoyo:true, repeat:-1 });
 	//TweenMax.to(text, 10, {scrollX:100, repeat:5, ease:Linear.easeNone});
 }
 

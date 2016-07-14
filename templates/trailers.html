@@ -1,0 +1,40 @@
+{% load staticfiles %}
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html lang="en">
+	<head>
+	    <title>{% block title %}{% endblock %}</title>
+		<link rel="stylesheet" type="text/css" href="{% static '/static/video_style.css' %}" />
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+	</head>
+	<body>
+		
+		<form id="trailer_selection" name="mainForm">
+			<input type="radio" name="trailer" value="X-Men" /> X-Men
+			<input type="radio" name="trailer" value="Independence Day" /> Independence Day
+			<input type="radio" name="trailer" value="Elephant" /> Elephant
+		</form>
+		<span id="result"></span>
+
+		<script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/1.18.4/TweenMax.min.js"></script>
+
+		<script>
+			document.mainForm.onclick = function(){
+				var radVal = document.mainForm.trailer.value;
+				result.innerHTML = 'You selected: '+ radVal;
+			}
+
+		</script>
+		<div id="scrolling_text">Sale on X-Men! Get your X-Men!</div>
+		<video src="/media/x-men.mp4" autoplay loop muted controls>	
+		</video>
+		<div id="additional_text">Wolverine, Mystique, Xavier!</div>
+
+
+		<script src="/static/move_text_over_video.js">
+		</script>
+	</body>
+</html>
+
+
+
+

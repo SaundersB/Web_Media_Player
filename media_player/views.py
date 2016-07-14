@@ -39,6 +39,13 @@ def canvas_video(request):
 	html = t.render()
 	return HttpResponse(html)
 
+def trailers(request):
+	t = get_template('trailers.html')
+	html = t.render()
+	return HttpResponse(html)	
+
+
+
 def media_browser(request):
 	''' This function will render a media browser with all files in the media folder. '''
 	t = get_template('media_browser.html')
@@ -170,11 +177,8 @@ def obtain_all_media_filenames():
 
 	return loaded_files, num_of_files
 
-
-
 def clean(instr):
     return instr.translate(None, string.punctuation + '')
-
 
 
 def parse_RSS_feed(url):
