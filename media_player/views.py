@@ -26,11 +26,16 @@ def homepage_view(request):
 def current_datetime(request):
 	now = datetime.datetime.now()
 	t = get_template('current_datetime.html')
-	html = t.render(Context({'current_date': now}))
+	html = t.render({'current_date': now})
 	return HttpResponse(html)
 
 def video_player(request):
 	t = get_template('video_player.html')
+	html = t.render()
+	return HttpResponse(html)
+
+def canvas_video(request):
+	t = get_template('canvas_sandbox.html')
 	html = t.render()
 	return HttpResponse(html)
 
@@ -57,7 +62,7 @@ def media_browser(request):
 	audio_track_list = AudioTrack.objects.all()
 
 	# Swap out the files found to be substituted and rendered into the HTML.
-	html = t.render(Context({'loaded_files': audio_track_list}))
+	html = t.render({'loaded_files': audio_track_list})
 
 	return HttpResponse(html)
 
@@ -123,18 +128,6 @@ def write_ID3_tag_information_to_database(current_audio_track):
 	# Obtain the media diretory with the current media file in order to read the ID3 tags.
 	id3r = id3reader.Reader(MEDIA_ROOT + current_audio_track)
 
-	'''
-	if (VERBOSE):
-		print("-----Starting ID3 Process-------")
-		print("album: " + id3r.getValue('album'))
-		print("performer: " + id3r.getValue('performer'))
-		print("title: " + id3r.getValue('title'))
-		print("track: " + str(id3r.getValue('track')))
-		print("year: " + str(id3r.getValue('year')))
-		print("genre: " + str(id3r.getValue('genre')))
-		print("-----------Ending---------------")
-	'''
-
 	# If each ID3 tag is not null, write it to the database row entry.
 	if(id3r.getValue('album') != None):
 		album = str(id3r.getValue('album').encode("utf-8"))
@@ -149,10 +142,7 @@ def write_ID3_tag_information_to_database(current_audio_track):
 	if(id3r.getValue('track') != "" and id3r.getValue('track') != None):
 		track_number = str(id3r.getValue('track').encode("utf-8"))
 
-
 	audio_track_object = AudioTrack(file_name = str(current_audio_track), song_title=str(song_title), artist=str(performer), album=str(album), genre=genre, year=year, track_number=track_number)
-
-	#print("Audio Track: " + audio_track)
 
 	audio_track_object.save()
 
@@ -178,7 +168,6 @@ def obtain_all_media_filenames():
 		num_of_files+=1
 		loaded_files.append(filename)
 
-
 	return loaded_files, num_of_files
 
 
@@ -187,3 +176,8 @@ def clean(instr):
     return instr.translate(None, string.punctuation + '')
 
 
+
+def parse_RSS_feed(url):
+
+
+	pass
