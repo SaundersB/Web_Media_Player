@@ -3,32 +3,70 @@
 <html lang="en">
 	<head>
 	    <title>{% block title %}{% endblock %}</title>
-		<link rel="stylesheet" type="text/css" href="{% static '/static/video_style.css' %}" />
+		<link rel="stylesheet" type="text/css" href="{% static '/static/trailer_style.css' %}" />
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 	</head>
 	<body>
-		
-		<form id="trailer_selection" name="mainForm">
-			<input type="radio" name="trailer" value="X-Men" /> X-Men
-			<input type="radio" name="trailer" value="Independence Day" /> Independence Day
-			<input type="radio" name="trailer" value="Elephant" /> Elephant
-		</form>
-		<span id="result"></span>
+		<div class="container">
+			<div class="jumbotron">
+				<h2>Movie Trailers</h2>
+				<div class="well well-lg">
+					<form id="trailer_selection" name="mainForm">
+						<input type="radio" name="trailer" value="19Mbps.mkv" /> X-Men <br>
+						<input type="radio" name="trailer" value="small.ogv" /> Independence Day <br>
+						<input type="radio" name="trailer" value="elephant_encoded.mp4" /> Elephant <br>
+					</form>
+				</div>
+				<span id="result"></span>
+				</div>
+		</div>
+
+		<div id="scrolling_text">Sale on X-Men! Get your X-Men!</div>
+			<video id="video" src="/media/19Mbps.mkv"  type="video/mp4" autoplay loop muted controls>	
+				Your browser does not support HTML5 video.
+			</video>
+		<div id="additional_text">Wolverine, Mystique, Xavier!</div>
+
+
 
 		<script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/1.18.4/TweenMax.min.js"></script>
 
 		<script>
+		
+		    var mp4Vid = document.getElementById('mp4source');
+      		var player = document.getElementById('video');
+
+      		console.log(mp4Vid);
+      		console.log(player);
+
 			document.mainForm.onclick = function(){
-				var radVal = document.mainForm.trailer.value;
-				result.innerHTML = 'You selected: '+ radVal;
+				var trailer_selected = document.mainForm.trailer.value;
+				result.innerHTML = 'You selected: ' + trailer_selected;
+
+				if(player != null){
+					player.pause();
+					console.log("Setting video source: " + trailer_selected);
+					var concat = "/media/" + trailer_selected;
+					player.setAttribute('src', concat);
+					console.log(player.getAttribute('src'));
+					console.log("Playing the video payer");
+					player.load();
+	      			player.play();
+				}
+
 			}
 
-		</script>
-		<div id="scrolling_text">Sale on X-Men! Get your X-Men!</div>
-		<video src="/media/x-men.mp4" autoplay loop muted controls>	
-		</video>
-		<div id="additional_text">Wolverine, Mystique, Xavier!</div>
+			function changeSource(url) {
+				var video = document.getElementById('video');
+				console.log("Changing the video source to: " + url + ".mp4")
+				video.src = url;
+				video.play();
 
+			}
+		
+
+		</script>
+		
 
 		<script src="/static/move_text_over_video.js">
 		</script>
