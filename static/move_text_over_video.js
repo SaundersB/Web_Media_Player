@@ -1,3 +1,9 @@
+var screen_height = window.innerHeight;
+var screen_width = window.innerWidth;
+
+console.log(screen_height);
+console.log(screen_width);
+
 
 function animateByIdFadeIn(currentDiv, nextDiv) {
 	console.log("animateByIdFadeIn");
@@ -11,13 +17,13 @@ function completeHandler() {
 
 function scroll_text_right(text){
 	console.log("scrolling_text");
-	TweenMax.to(text, 50, {x:2000, yoyo:true, repeat:-1 });
+	TweenMax.to(text, 50, {x:screen_width, yoyo:true, repeat:-1 });
 	//TweenMax.to(text, 10, {scrollX:100, repeat:5, ease:Linear.easeNone});
 }
 
 function scroll_text_left(text){
 	console.log("scrolling_text");
-	TweenMax.to(text, 50, {x:-2000, yoyo:true, repeat:-1 });
+	TweenMax.to(text, 50, {x:-screen_width, yoyo:true, repeat:-1 });
 	//TweenMax.to(text, 10, {scrollX:100, repeat:5, ease:Linear.easeNone});
 }
 

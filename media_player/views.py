@@ -65,7 +65,7 @@ def obtain_all_video_filenames():
 	for filename in os.listdir(os.getcwd() + "/media/"):
 		if(VERBOSE):
 			print(filename)
-		if(filename.endswith(".mp4") or filename.endswith(".ogg") or filename.endswith(".webm") or filename.endswith(".ogv")):
+		if(filename.endswith(".mp4") or filename.endswith(".ogg") or filename.endswith(".webm") or filename.endswith(".ogv") or filename.endswith(".mkv")):
 			num_of_files+=1
 			loaded_files.append(filename)
 
