@@ -7,14 +7,15 @@
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 	</head>
 	<body>
+		{% block content %}
 		<div class="container">
 			<div class="jumbotron">
 				<h2>Movie Trailers</h2>
 				<div class="well well-lg">
 					<form id="trailer_selection" name="mainForm">
-						<input type="radio" name="trailer" value="19Mbps.mkv" /> X-Men <br>
-						<input type="radio" name="trailer" value="small.ogv" /> Independence Day <br>
-						<input type="radio" name="trailer" value="elephant_encoded.mp4" /> Elephant <br>
+						{% for file in list_of_files %}
+							<input type="radio" name="trailer" value={{ file }}  /> {{ file }} <br>
+						{% endfor %}
 					</form>
 				</div>
 				<span id="result"></span>
@@ -27,7 +28,7 @@
 			</video>
 		<div id="additional_text">Wolverine, Mystique, Xavier!</div>
 
-
+		{% endblock %}
 
 		<script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/1.18.4/TweenMax.min.js"></script>
 
@@ -48,6 +49,7 @@
 					console.log("Setting video source: " + trailer_selected);
 					var concat = "/media/" + trailer_selected;
 					player.setAttribute('src', concat);
+					player.src = concat;
 					console.log(player.getAttribute('src'));
 					console.log("Playing the video payer");
 					player.load();

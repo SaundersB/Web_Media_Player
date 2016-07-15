@@ -41,9 +41,35 @@ def canvas_video(request):
 
 def trailers(request):
 	t = get_template('trailers.html')
-	html = t.render()
+
+	listing_of_files, num_of_files = obtain_all_video_filenames()
+
+	print(listing_of_files, num_of_files)
+
+	html = t.render({'number_of_files': num_of_files})
+	html = t.render({'list_of_files': listing_of_files})
+
 	return HttpResponse(html)	
 
+def obtain_all_video_filenames():
+	''' This function will obtain a list of all video files in the media folder. '''
+	print("----------------------------------------------------------------")
+	print("Obtaining all video file_names")
+	if(VERBOSE):
+		print("\nMEDIA DIRECTORY: " + MEDIA_ROOT)
+
+	loaded_files = []
+	num_of_files = 0
+
+	# Iterate over all files found in the media directory. Count the total number of files.
+	for filename in os.listdir(os.getcwd() + "/media/"):
+		if(VERBOSE):
+			print(filename)
+		if(filename.endswith(".mp4") or filename.endswith(".ogg") or filename.endswith(".webm") or filename.endswith(".ogv")):
+			num_of_files+=1
+			loaded_files.append(filename)
+
+	return loaded_files, num_of_files
 
 
 def media_browser(request):
@@ -172,8 +198,9 @@ def obtain_all_media_filenames():
 	for filename in os.listdir(os.getcwd() + "/media/"):
 		if(VERBOSE):
 			print(filename)
-		num_of_files+=1
-		loaded_files.append(filename)
+		if(filename.endswith(".mp3")):
+			num_of_files+=1
+			loaded_files.append(filename)
 
 	return loaded_files, num_of_files
 
