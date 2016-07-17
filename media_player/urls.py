@@ -15,14 +15,15 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
-from media_player.views import hello, homepage_view, current_datetime, video_player, media_browser, canvas_video, trailers
+from media_player.views import hello, homepage_view, current_datetime, video_player, audio_media_browser, video_media_browser, canvas_video, trailers
 from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
 	url(r'^$', current_datetime),
 	url(r'^video/$', video_player),
-	url(r'^media/$', media_browser),
+	url(r'^audio_media/$', audio_media_browser),
+	url(r'^video_media/$', video_media_browser),
     url(r'^canvas/$', canvas_video),
 	url(r'^$', homepage_view),
     url(r'^admin/', admin.site.urls),

@@ -72,12 +72,12 @@ def obtain_all_video_filenames():
 	return loaded_files, num_of_files
 
 
-def media_browser(request):
+def audio_media_browser(request):
 	''' This function will render a media browser with all files in the media folder. '''
 	t = get_template('media_browser.html')
 
 	# Provides a list of file_names.
-	found_files = obtain_all_media_filenames()
+	found_files = obtain_all_audio_filenames()
 
 	# Checks the found files for 
 	new_files = scan_for_new_audio_files()
@@ -100,10 +100,39 @@ def media_browser(request):
 	return HttpResponse(html)
 
 
+def video_media_browser(request):
+	''' This function will render a media browser with all files in the media folder. '''
+	t = get_template('media_browser.html')
+
+	# Provides a list of file_names.
+	found_files = obtain_all_video_filenames()
+
+	# Checks the found files for 
+	#new_files = scan_for_new_audio_files()
+	'''
+	if(len(new_files) > 0):
+		print("New files were found.")
+		# Update the database with all the current media files found in the media folder.
+ 		for new_file in new_files:
+ 			print("Adding " + new_file)
+ 			#write_ID3_tag_information_to_database(new_file)
+
+	else:
+		print("No new files.")
+		
+	audio_track_list = AudioTrack.objects.all()
+	'''
+	# Swap out the files found to be substituted and rendered into the HTML.
+	#html = t.render({'loaded_files': audio_track_list})
+	html = t.render()
+
+	return HttpResponse(html)
+
+
 def scan_for_new_audio_files():
 	print("---------Scanning---for-----new------files----------------")
 	# Obtain a list of all media files in the media folder.
-	loaded_files, num_of_files = obtain_all_media_filenames()
+	loaded_files, num_of_files = obtain_all_audio_filenames()
 
 	# Obtain all objects from the database
 	audio_track_list = AudioTrack.objects.all()
@@ -184,7 +213,7 @@ def write_ID3_tag_information_to_database(current_audio_track):
 
 
 
-def obtain_all_media_filenames():
+def obtain_all_audio_filenames():
 	''' This function will obtain a list of all files in the media folder. '''
 	print("----------------------------------------------------------------")
 	print("Obtaining all media file_names")
