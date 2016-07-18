@@ -292,18 +292,20 @@ def write_video_information_to_database(current_video_track):
 			print(line)
 			read_video_width = line
 			read_video_width = read_video_width.split(":")[1]
-			read_video_width.replace(' ', '')
+			read_video_width = read_video_width.replace(' ', '')
+			read_video_width = read_video_width.replace('pixels', '')
 
 		if 'Height' in line:
 			print(line)
 			read_video_height = line
 			read_video_height = read_video_height.split(":")[1]
-			read_video_height.replace(' ','')
+			read_video_height = read_video_height.replace(' ','')
+			read_video_height = read_video_height.replace('pixels','')
 
 		if 'Display aspect ratio' in line:
 			print(line)
 			read_video_aspect_ratio = line
-			read_video_aspect_ratio = read_video_aspect_ratio.split(":")[1]
+			read_video_aspect_ratio = read_video_aspect_ratio.split(":")[1] + ":" + read_video_aspect_ratio.split(":")[2]
 
 		if 'Frame rate' in line:
 			print(line)
