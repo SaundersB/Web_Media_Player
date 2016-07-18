@@ -1,6 +1,8 @@
 from __future__ import unicode_literals
 
 from django.db import models
+from datetime import datetime
+from django.utils import timezone
 
 # Models
 class AudioTrack(models.Model):
@@ -30,7 +32,7 @@ class VideoTrack(models.Model):
 	video_frame_rate = models.CharField(max_length=50, null=True)
 	video_format = models.CharField(max_length=50, null=True)
 	bit_rate = models.CharField(max_length=50, null=True)
-	date_added = models.DateField(max_length=20, null=True)
+	date_added = models.DateTimeField(default=datetime.now,blank=True)
 	play_count = models.IntegerField(null=True)
 	rating = models.CharField(max_length=10, null=True)
 	year = models.CharField(max_length=20, null=True)

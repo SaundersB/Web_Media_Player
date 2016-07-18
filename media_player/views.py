@@ -6,6 +6,7 @@ from django.core.files.storage import FileSystemStorage
 from django.db import models
 from media_browser.models import AudioTrack, VideoTrack
 from django.shortcuts import get_object_or_404
+from django.utils.timezone import utc
 
 import datetime
 import os
@@ -261,6 +262,7 @@ def write_video_information_to_database(current_video_track):
 	read_file_size = ""
 	read_file_name = ""
 
+	time_now = datetime.datetime.now()
 
 	video_file_metadata = getVideoMetadata(current_video_track)
 
@@ -322,7 +324,7 @@ def write_video_information_to_database(current_video_track):
 		video_length=str(read_video_length), video_width=str(read_video_width),\
 		video_height=str(read_video_height), video_aspect_ratio=str(read_video_aspect_ratio),\
 		video_frame_rate=str(read_video_frame_rate), video_format=str(read_video_format),\
-		bit_rate=str(read_bit_rate), file_size=str(read_file_size))
+		bit_rate=str(read_bit_rate), file_size=str(read_file_size), rating="")
 
 	video_track_object.save()
 
@@ -384,8 +386,6 @@ def clean(instr):
 
 
 def parse_RSS_feed(url):
-
-
 	pass
 
 def getVideoMetadata(filename):
