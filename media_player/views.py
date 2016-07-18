@@ -99,7 +99,6 @@ def video_media_browser(request):
 		# Update the database with all the current media files found in the media folder.
 		print(new_files)
  		for new_file in found_files:
- 			print(getVideoMetadata(str(new_file)))
  			print("Writing out video files")
  			print(new_file)
  			write_video_information_to_database(new_file)
@@ -255,6 +254,15 @@ def write_video_information_to_database(current_video_track):
 	file_size = ""
 	file_name = ""
 
+
+	video_file_metadata = getVideoMetadata(current_video_track)
+
+	print("-----------Video____Metadata---------")
+	for entry in video_file_metadata:
+		print(entry)
+
+	print("-----------End_Video_Metadata---------")
+
 	'''
 	
 
@@ -325,5 +333,6 @@ def parse_RSS_feed(url):
 	pass
 
 def getVideoMetadata(filename):
-	result = subprocess.Popen(["ffprobe", filename], stdout = subprocess.PIPE, stderr = subprocess.STDOUT)
+	full_path = MEDIA_ROOT + filename
+	result = subprocess.Popen(["ffprobe", full_path], stdout = subprocess.PIPE, stderr = subprocess.STDOUT)
 	return result.stdout.readlines()
