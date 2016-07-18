@@ -22,12 +22,11 @@
 			<th>Rating</th>
 			<th>Year</th>
 			<th>File Size</th>
-			<th>File Name</th>
 		</tr>
 
 		{% for file in loaded_files %}
 			<tr>
-				<td>{{ file.video_title }} 
+				<td>{{ file.file_name }} 
 				</td>
 				<td>{{ file.video_length }} 
 				</td>
@@ -50,8 +49,6 @@
 				<td>{{ file.year }} 
 				</td>
 				<td>{{ file.file_size }} 
-				</td>
-				<td>{{ file.file_name }} 
 				</td>
 			</tr>
 		{% endfor %}

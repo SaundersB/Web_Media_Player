@@ -275,46 +275,48 @@ def write_video_information_to_database(current_video_track):
 		if 'Format  ' in line:
 			print(line)
 			read_video_format = line
-			print(read_video_format.split(":")[1])
+			read_video_format = read_video_format.split(":")[1]
 		if 'Duration' in line:
 			print(line)
 			read_video_length = line
-			print(read_video_length.split(":")[1])
+			read_video_length = read_video_length.split(":")[1]
 
 		if 'Overall bit rate' in line:
 			print(line)
 			read_bit_rate = line
-			print(read_bit_rate.split(":")[1])
+			read_bit_rate = read_bit_rate.split(":")[1]
 
 		if 'Width' in line:
 			print(line)
 			read_video_width = line
-			print(read_video_width.split(":")[1])
+			read_video_width = read_video_width.split(":")[1]
+			read_video_width.replace(' ', '')
 
 		if 'Height' in line:
 			print(line)
 			read_video_height = line
-			print(read_video_height.split(":")[1])
+			read_video_height = read_video_height.split(":")[1]
+			read_video_height.replace(' ','')
 
 		if 'Display aspect ratio' in line:
 			print(line)
 			read_video_aspect_ratio = line
-			print(read_video_aspect_ratio.split(":")[1])
+			read_video_aspect_ratio = read_video_aspect_ratio.split(":")[1]
 
 		if 'Frame rate' in line:
 			print(line)
 			read_video_frame_rate = line
-			print(read_video_frame_rate.split(":")[1])
+			read_video_frame_rate = read_video_frame_rate.split(":")[1]
 
 		if 'File size' in line:
 			print(line)
 			read_file_size = line
-			print(read_file_size.split(":")[1])
+			read_file_size = read_file_size.split(":")[1]
 
 		if 'Encoded Date' in line:
 			print(line)
 			read_file_size = line
-			print(read_file_size.split(":")[1])
+			read_file_size = read_file_size.split(":")[1]
 	
 	video_track_object = VideoTrack(file_name = str(current_video_track), video_title=str(read_video_title),\
 		video_length=str(read_video_length), video_width=str(read_video_width),\
