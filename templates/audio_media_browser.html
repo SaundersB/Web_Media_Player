@@ -6,6 +6,16 @@
 {% block content %}
 
 <div class="panel panel-default">
+
+
+	<div class="container">
+		<div class="audio-player">
+		    <audio id="audio-player" src="" type="audio/mp3" controls="controls"></audio>
+		</div>
+	</div>
+
+	<br>
+
 	<div class="panel-heading">Audio Tracks</div>
 	<table class="table">
 		<tr>
@@ -16,11 +26,12 @@
 			<th>Genre</th>
 			<th>Year</th>
 			<th>File Name</th>
+			<th>Date Added</th>
 		</tr>
 
 		{% for file in loaded_files %}
 			<tr>
-				<td>{{ file.song_title }} 
+				<td>{{ file.track_title }} 
 				</td>
 				<td>{{ file.artist }} 
 				</td>
@@ -33,6 +44,8 @@
 				<td>{{ file.year }} 
 				</td>
 				<td>{{ file.file_name }} 
+				</td>
+				<td>{{ file.date_added }}
 				</td>
 			</tr>
 		{% endfor %}

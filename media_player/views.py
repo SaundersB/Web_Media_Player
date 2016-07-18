@@ -216,6 +216,7 @@ def write_ID3_tag_information_to_database(current_audio_track):
 	track_number = ""
 	performer = ""
 	song_title = ""
+	read_track_title = ""
 
 	# Obtain the media diretory with the current media file in order to read the ID3 tags.
 	id3r = id3reader.Reader(MEDIA_ROOT + current_audio_track)
@@ -223,18 +224,26 @@ def write_ID3_tag_information_to_database(current_audio_track):
 	# If each ID3 tag is not null, write it to the database row entry.
 	if(id3r.getValue('album') != None):
 		album = str(id3r.getValue('album').encode("utf-8"))
+		print("Album: " + album)
 	if(id3r.getValue('performer') != None):
 		performer = str(id3r.getValue('performer'))
+		print("Artist: " + performer)
 	if(id3r.getValue('title') != None):
 		song_title = str(id3r.getValue('title').encode("utf-8"))
+		print("Song Title: " + song_title)
 	if(id3r.getValue('year') != "" and id3r.getValue('year') != None):
 		year = str(id3r.getValue('year').encode("utf-8"))
+		print("Year: " + year)
 	if(id3r.getValue('genre') != None and id3r.getValue('genre') != ""):
 		genre = str(id3r.getValue('genre').encode("utf-8"))
+		print("Genre: " + genre)
 	if(id3r.getValue('track') != "" and id3r.getValue('track') != None):
 		track_number = str(id3r.getValue('track').encode("utf-8"))
+		print("Track Number: " + track_number)
 
-	audio_track_object = AudioTrack(file_name = str(current_audio_track), song_title=str(song_title), artist=str(performer), album=str(album), genre=genre, year=year, track_number=track_number)
+	read_track_title = current_audio_track.split(".")[0]
+
+	audio_track_object = AudioTrack(file_name = str(current_audio_track), song_title=str(song_title), artist=str(performer), album=str(album), genre=str(genre), year=str(year), track_number=str(track_number), track_title=str(read_track_title))
 
 	audio_track_object.save()
 

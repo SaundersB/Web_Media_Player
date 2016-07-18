@@ -16,8 +16,10 @@ class AudioTrack(models.Model):
 	rating = models.CharField(max_length=10, null=True)
 	year = models.CharField(max_length=20,null=True)
 	track_number = models.CharField(max_length=200, null=True)
+	track_title = models.CharField(max_length=200, null=True)
 	file_size = models.CharField(max_length=20, null=True)
 	file_name = models.CharField(max_length=200, null=True)
+	date_added = models.DateTimeField(default=timezone.now,blank=True)
 
 	#def __str__(self):
 	#	return u'%s %s %s %s %s %s %s %s %s %s' % (self.song_title, self.artist, self.album, self.date_added, self.genre, self.play_count, self.rating, self.year, self.track_number, self.file_size)
