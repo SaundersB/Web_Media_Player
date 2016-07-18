@@ -8,11 +8,12 @@
 <div class="panel panel-default">
 
 
-	<div class="container">
-		<div class="audio-player">
-		    <audio id="audio-player" src="" type="audio/mp3" controls="controls"></audio>
-		</div>
-	</div>
+	    <audio id="audio-player" type="audio/mp3" controls="controls">
+	    	<source id="audio-source" type="audio/mp3"></source>
+	    	Your browser does not support audio.
+	    </audio>
+
+	</script>
 
 	<br>
 
@@ -31,7 +32,26 @@
 
 		{% for file in loaded_files %}
 			<tr>
-				<td>{{ file.track_title }} 
+				<td>
+					<a href="#" rel="nofollow" onclick="return loadSong('{{ file.file_name }} ');">{{ file.track_title }}</a>
+
+					<script>
+						function loadSong(audio_track_name){
+							var full_media_path = "/media/" + audio_track_name;
+							var audio_element = document.getElementById("audio-player");
+							var audio_source = document.getElementById("audio-source");
+
+							audio_element.src = full_media_path;
+
+							console.log("Loading the song.");
+							console.log(audio_element);
+							console.log(audio_source);
+
+							audio_element.load();
+
+						}
+					</script>
+
 				</td>
 				<td>{{ file.artist }} 
 				</td>
