@@ -26,7 +26,22 @@
 
 		{% for file in loaded_files %}
 			<tr>
-				<td>{{ file.file_name }} 
+				<td>
+					<a href="#" rel="nofollow" onclick="return launchVideo('{{ file.file_name }}');">{{ file.file_name }}</a>
+
+					<script>
+						function launchVideo(video_name){
+							var full_media_path = "/media/" + video_name;
+							var video_html = "<video id=\"video\" src=" + full_media_path + " type=\"video/mp4\" autoplay loop muted controls>	Your browser does not support HTML5 video. </video>";
+
+							console.log("Launching the video.");
+							console.log(video_name);
+
+							document.getElementById("video_display").innerHTML = video_html;
+							document.getElementById("video_display").style.display="block";
+						}
+
+					</script>
 				</td>
 				<td>{{ file.video_length }} 
 				</td>
@@ -44,7 +59,9 @@
 				</td>
 				<td>{{ file.date_added }} 
 				</td>
-				<td>{{ file.rating }} 
+				<td>
+
+				{{ file.rating }} 
 				</td>
 				<td>{{ file.year }} 
 				</td>
@@ -55,6 +72,9 @@
 	
 	</table>
 </div>
+
+<div id="video_display">Video Player</div>
+
 
 
 	
