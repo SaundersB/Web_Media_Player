@@ -117,7 +117,7 @@ def video_media_browser(request):
 	#	html = t.render({'loaded_files': new_files})
 	#else:
 	#	print("There are no files.")
-	html = t.render()
+	html = t.render({'loaded_files': video_track_list})
 
 	return HttpResponse(html)
 
@@ -245,34 +245,88 @@ def write_video_information_to_database(current_video_track):
 	''' This function will obtain individual ID3 tags from an MP3 file and save it to the AudioTrack
 	Django Model if the value is non-null. '''
 	# Initialize all fields to an empty string.
-	video_title = ""
-	artist = ""
-	genre = ""
-	play_count = ""
-	rating = ""
-	year = ""
-	file_size = ""
-	file_name = ""
+	read_video_title = ""
+	read_video_length = ""
+	read_video_width = ""
+	read_video_height = ""
+	read_video_aspect_ratio = ""
+	read_video_frame_rate = ""
+	read_video_format = ""
+	read_bit_rate = ""
+	read_artist = ""
+	read_genre = ""
+	read_play_count = ""
+	read_rating = ""
+	read_year = ""
+	read_file_size = ""
+	read_file_name = ""
 
 
 	video_file_metadata = getVideoMetadata(current_video_track)
 
-	print("-----------Video____Metadata---------")
-	for entry in video_file_metadata:
-		print(entry)
 
-	print("-----------End_Video_Metadata---------")
+	print("-----------Video__" + current_video_track  + "__Metadata---------")
 
-	'''
+	data = getMediaInfoMetadata(current_video_track)
+
+	for line in data:
+		#print("Line: " + line)
+
+		if 'Format  ' in line:
+			print(line)
+			read_video_format = line
+			print(read_video_format.split(":")[1])
+		if 'Duration' in line:
+			print(line)
+			read_video_length = line
+			print(read_video_length.split(":")[1])
+
+		if 'Overall bit rate' in line:
+			print(line)
+			read_bit_rate = line
+			print(read_bit_rate.split(":")[1])
+
+		if 'Width' in line:
+			print(line)
+			read_video_width = line
+			print(read_video_width.split(":")[1])
+
+		if 'Height' in line:
+			print(line)
+			read_video_height = line
+			print(read_video_height.split(":")[1])
+
+		if 'Display aspect ratio' in line:
+			print(line)
+			read_video_aspect_ratio = line
+			print(read_video_aspect_ratio.split(":")[1])
+
+		if 'Frame rate' in line:
+			print(line)
+			read_video_frame_rate = line
+			print(read_video_frame_rate.split(":")[1])
+
+		if 'File size' in line:
+			print(line)
+			read_file_size = line
+			print(read_file_size.split(":")[1])
+
+		if 'Encoded Date' in line:
+			print(line)
+			read_file_size = line
+			print(read_file_size.split(":")[1])
 	
+	video_track_object = VideoTrack(file_name = str(current_video_track), video_title=str(read_video_title),\
+		video_length=str(read_video_length), video_width=str(read_video_width),\
+		video_height=str(read_video_height), video_aspect_ratio=str(read_video_aspect_ratio),\
+		video_frame_rate=str(read_video_frame_rate), video_format=str(read_video_format),\
+		bit_rate=str(read_bit_rate), file_size=str(read_file_size))
 
-	audio_track_object = VideoTrack(file_name = str(current_audio_track), song_title=str(song_title), artist=str(performer), album=str(album), genre=genre, year=year, track_number=track_number)
-
-	audio_track_object.save()
+	video_track_object.save()
 
 	# Save all fields for this database row entry.
-	return audio_track_object
-	'''
+	return video_track_object
+	
 
 
 def obtain_all_audio_filenames():
@@ -335,4 +389,15 @@ def parse_RSS_feed(url):
 def getVideoMetadata(filename):
 	full_path = MEDIA_ROOT + filename
 	result = subprocess.Popen(["ffprobe", full_path], stdout = subprocess.PIPE, stderr = subprocess.STDOUT)
+	return result.stdout.readlines()
+
+
+def getDurationMetadata(filename):
+	full_path = MEDIA_ROOT + filename
+	result = subprocess.Popen(["ffprobe", full_path], stdout = subprocess.PIPE, stderr = subprocess.STDOUT)
+	return [x for x in result.stdout.readlines() if "Duration" in x]
+
+def getMediaInfoMetadata(filename):
+	full_path = MEDIA_ROOT + filename
+	result = subprocess.Popen(["mediainfo", full_path], stdout = subprocess.PIPE, stderr = subprocess.STDOUT)
 	return result.stdout.readlines()

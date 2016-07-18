@@ -10,25 +10,40 @@
 	<table class="table">
 		<tr>
 			<th>Track Title</th>
-			<th>Artist</th> 
-			<th>Album</th>
-			<th>Track Number</th>
-			<th>Genre</th>
+			<th>Video Length</th> 
+			<th>Aspect Ratio</th>
+			<th>Frame Rate</th>
+			<th>Format</th>
+			<th>Width</th>
+			<th>Height</th>
+
+			<th>Bit Rate</th> 
+			<th>Date Added</th>
+			<th>Rating</th>
 			<th>Year</th>
+			<th>File Size</th>
 			<th>File Name</th>
 		</tr>
-<!--
+
 		{% for file in loaded_files %}
 			<tr>
 				<td>{{ file.video_title }} 
 				</td>
-				<td>{{ file.artist }} 
+				<td>{{ file.video_length }} 
+				</td>
+				<td>{{ file.video_aspect_ratio }} 
+				</td>
+				<td>{{ file.video_frame_rate }} 
+				</td>
+				<td>{{ file.video_format }} 
+				</td>
+				<td>{{ file.video_width }} 
+				</td>
+				<td>{{ file.video_height }} 
+				</td>
+				<td>{{ file.bit_rate }} 
 				</td>
 				<td>{{ file.date_added }} 
-				</td>
-				<td>{{ file.genre }} 
-				</td>
-				<td>{{ file.play_count }} 
 				</td>
 				<td>{{ file.rating }} 
 				</td>
@@ -36,10 +51,11 @@
 				</td>
 				<td>{{ file.file_size }} 
 				</td>
-
+				<td>{{ file.file_name }} 
+				</td>
 			</tr>
 		{% endfor %}
-	-->
+	
 	</table>
 </div>
 

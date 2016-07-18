@@ -23,11 +23,17 @@ class AudioTrack(models.Model):
 
 class VideoTrack(models.Model):
 	video_title = models.CharField(max_length=50, null=True)
-	artist = models.CharField(max_length=100, null=True)
+	video_length = models.CharField(max_length=50, null=True)
+	video_width = models.CharField(max_length=50, null=True)
+	video_height = models.CharField(max_length=50, null=True)
+	video_aspect_ratio = models.CharField(max_length=50, null=True)
+	video_frame_rate = models.CharField(max_length=50, null=True)
+	video_format = models.CharField(max_length=50, null=True)
+	bit_rate = models.CharField(max_length=50, null=True)
 	date_added = models.DateField(max_length=20, null=True)
-	genre = models.CharField(max_length=50, null=True)
 	play_count = models.IntegerField(null=True)
 	rating = models.CharField(max_length=10, null=True)
 	year = models.CharField(max_length=20, null=True)
 	file_size = models.CharField(max_length=20, null=True)
 	file_name = models.CharField(max_length=20, null=True)
+
