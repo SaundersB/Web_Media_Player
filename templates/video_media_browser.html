@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block title %}Media Browser{% endblock %}
+
+{% block content %}
+
+<div class="panel panel-default">
+	<div class="panel-heading">Video Files</div>
+	<table class="table">
+		<tr>
+			<th>Track Title</th>
+			<th>Artist</th> 
+			<th>Album</th>
+			<th>Track Number</th>
+			<th>Genre</th>
+			<th>Year</th>
+			<th>File Name</th>
+		</tr>
+<!--
+		{% for file in loaded_files %}
+			<tr>
+				<td>{{ file.video_title }} 
+				</td>
+				<td>{{ file.artist }} 
+				</td>
+				<td>{{ file.date_added }} 
+				</td>
+				<td>{{ file.genre }} 
+				</td>
+				<td>{{ file.play_count }} 
+				</td>
+				<td>{{ file.rating }} 
+				</td>
+				<td>{{ file.year }} 
+				</td>
+				<td>{{ file.file_size }} 
+				</td>
+
+			</tr>
+		{% endfor %}
+	-->
+	</table>
+</div>
+
+
+	
+{% endblock %}
