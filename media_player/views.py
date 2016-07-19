@@ -38,10 +38,14 @@ def video_player(request):
 
 	listing_of_files, num_of_files = obtain_all_video_filenames()
 
-	first_vid = list_of_files[0]
-	print(first_vid)
-
-	html = t.render({'first_vid': first_video})
+	if listing_of_files[0] != None:
+		print("First video: found " + listing_of_files[0])
+		first_vid = "/media/" + listing_of_files[0]
+		html = t.render({'first_video': first_vid})
+	else:
+		print("Did not find a video.")
+		html = t.render()
+	
 	return HttpResponse(html)
 
 def canvas_video(request):
