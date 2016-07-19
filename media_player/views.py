@@ -391,6 +391,14 @@ def obtain_all_video_filenames():
 
 
 
+def local_video_player(request):
+	#local_video_player.html
+	t = get_template('local_video_player.html')
+        html = t.render()
+        return HttpResponse(html)
+
+
+
 
 def clean(instr):
     return instr.translate(None, string.punctuation + '')
