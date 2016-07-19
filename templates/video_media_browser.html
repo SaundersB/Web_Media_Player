@@ -32,7 +32,7 @@
 					<script>
 						function launchVideo(video_name){
 							var full_media_path = "/media/" + video_name;
-							var video_html = "<video id=\"video\" src=" + full_media_path + " type=\"video/mp4\" autoplay controls>	Your browser does not support HTML5 video. </video>";
+							var video_html = "<video id=\"video\" src=" + full_media_path + " type=\"video/mp4\" autoplay controls loop preload=\"auto\">	Your browser does not support HTML5 video. </video>";
 
 							var video_element = document.getElementById("video_display");
 

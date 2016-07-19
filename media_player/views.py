@@ -13,6 +13,7 @@ import os
 import id3reader
 import string
 import subprocess
+import requests
 
 
 VERBOSE = True
@@ -34,7 +35,13 @@ def current_datetime(request):
 
 def video_player(request):
 	t = get_template('video_player.html')
-	html = t.render()
+
+	listing_of_files, num_of_files = obtain_all_video_filenames()
+
+	first_vid = list_of_files[0]
+	print(first_vid)
+
+	html = t.render({'first_video': first_vid})
 	return HttpResponse(html)
 
 def canvas_video(request):
@@ -394,10 +401,18 @@ def obtain_all_video_filenames():
 def local_video_player(request):
 	#local_video_player.html
 	t = get_template('local_video_player.html')
-        html = t.render()
-        return HttpResponse(html)
+    html = t.render()
+    return HttpResponse(html)
 
 
+def download_file(url):
+    local_filename = url.split('/')[-1]
+    r = requests.get(url, stream=True)
+    with open(local_filename, 'wb') as f:
+        for chunk in r.iter_content(chunk_size=1024):
+            if chunk: # filter out keep-alive new chunks
+                f.write(chunk)
+    return local_filename
 
 
 def clean(instr):

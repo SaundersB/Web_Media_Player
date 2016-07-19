@@ -8,37 +8,12 @@
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 	</head>
 	<body>
-		<video controls autoplay loop muted>
+		<video controls autoplay loop muted preload="auto">
 			Playing Local Video
-			<source src="/media/19Mbps.mkv" type="video/mp4">
+			<source src= "{{ first_video }}" type="video/mp4">
 			Your browser does not support WebM HTML5 video.
 		</video>
-		<!--
-		<video controls loop muted preload="auto">
-			<source src="/media/19Mbps.mp4" type="video/mp4">
-			<source src="/media/19Mbps.mkv" type="video/mp4">
-			Your browser does not support WebM HTML5 video.
-		</video>
-		<video controls autoplay loop muted>
-			Playing Local Video
-			<source src="/media/1280x720_1mb.mp4" type="video/mp4">
-			Your browser does not support WebM HTML5 video.
-		</video>
-		<video controls autoplay loop muted>
-			<source src="http://www.quirksmode.org/html5/videos/big_buck_bunny.webm" type="video/ogg">
-			Your browser does not support WebM HTML5 video.
-		</video>
-		<video controls autoplay loop muted>
-			<source src="http://www.quirksmode.org/html5/videos/big_buck_bunny.ogv" type="video/ogg">
-			Your browser does not support OGG HTML5 video.
-		</video>
-		<video controls="controls" autoplay="autoplay" loop="loop" >
-          <source src="http://easyhtml5video.com/assets/video/new/Penguins_of_Madagascar.m4v" type="video/mp4" />
-          <source src="http://easyhtml5video.com/assets/video/new/Penguins_of_Madagascar.webm" type="video/webm" />
-          <source src="http://easyhtml5video.com/assets/video/new/Penguins_of_Madagascar.ogv" type="video/ogg" />
-          <source src="http://easyhtml5video.com/assets/video/new/Penguins_of_Madagascar.mp4" />
-      	</video>
-		-->
+
 
 
 	</body>
