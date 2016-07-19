@@ -27,9 +27,9 @@ urlpatterns = [
 	url(r'^local_video_player/$', local_video_player),
 	url(r'^canvas/$', canvas_video),
 	url(r'^$', homepage_view),
-    	url(r'^admin/', admin.site.urls),
-    	url(r'^trailers/$', trailers),
-    	url(r'^hello/$', hello),
+    url(r'^admin/', admin.site.urls),
+    url(r'^trailers/$', trailers),
+    url(r'^hello/$', hello),
 ]
 
 if settings.DEBUG is True:

@@ -41,7 +41,7 @@ def video_player(request):
 	first_vid = list_of_files[0]
 	print(first_vid)
 
-	html = t.render({'first_video': first_vid})
+	html = t.render({'first_vid': first_video})
 	return HttpResponse(html)
 
 def canvas_video(request):
@@ -60,6 +60,13 @@ def trailers(request):
 	html = t.render({'list_of_files': listing_of_files})
 
 	return HttpResponse(html)	
+
+def local_video_player(request):
+	#local_video_player.html
+	t = get_template('local_video_player.html')
+	html = t.render()
+	return HttpResponse(html)
+
 
 def audio_media_browser(request):
 	''' This function will render a media browser with all files in the media folder. '''
@@ -396,13 +403,6 @@ def obtain_all_video_filenames():
 
 	return loaded_files, num_of_files
 
-
-
-def local_video_player(request):
-	#local_video_player.html
-	t = get_template('local_video_player.html')
-    html = t.render()
-    return HttpResponse(html)
 
 
 def download_file(url):
